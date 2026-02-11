@@ -5,11 +5,11 @@ description: Spaces, collections, sources, and artifacts in Ctxfy.
 
 ## Overview
 
-Ctxfy organizes content in a hierarchical model: **Spaces** → **Collections** → **Sources** → **Artifacts**.
+Ctxfy organizes AI context in a hierarchical model: **Spaces** → **Collections** → **Sources** → **Artifacts**. Upload raw input (conversations, documents, files), extract structured context and artifacts, and use them across projects.
 
 ## Spaces
 
-A **space** is the top-level container. Each user owns spaces and can create, list, update, and delete them. All other resources (collections, sources, artifacts) belong to a space.
+A **space** is a project container. Use spaces to organize snapshots and keep context isolated. Each user owns spaces and can create, list, update, and delete them. All other resources (collections, sources, artifacts) belong to a space.
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -30,13 +30,13 @@ A **space** is the top-level container. Each user owns spaces and can create, li
 
 ## Sources
 
-A **source** is the main content unit. It has a `type`, processing `status`, and optional `collectionId`. Types:
+A **source** is raw input you upload for processing—AI conversations, documents, URLs, or files. It has a `type`, processing `status`, and optional `collectionId`. Types:
 
 | Type | Description | `initial_data` |
 |------|-------------|----------------|
 | **URI** | Web URL | `url` or `uri` (required) |
-| **FILE** | File in S3 | `data` — fileKey from POST /upload/s3 response |
-| **CONTENT** | Inline content | `data` |
+| **FILE** | Uploaded file | `data` — fileKey from POST /upload/s3 response |
+| **CONTENT** | Pasted content (e.g. AI conversation) | `data` |
 | **COMPOSITION** | Combined sources | `source_ids` (array) |
 
 ### Source status
@@ -59,7 +59,7 @@ A **source** is the main content unit. It has a `type`, processing `status`, and
 
 ## Artifacts
 
-**Artifacts** are extracted outputs from sources (e.g. context summaries, structured data). They have status: `CREATED`, `PENDING`, `PROCESSING`, `REVIEW`, `COMPLETED`, `FAILED`.
+**Artifacts** are extracted outputs from sources—code, schemas, diagrams, and structured context. They have status: `CREATED`, `PENDING`, `PROCESSING`, `REVIEW`, `COMPLETED`, `FAILED`.
 
 | Method | Path | Description |
 |--------|------|-------------|

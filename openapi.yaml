@@ -3,9 +3,10 @@ info:
   title: Ctxfy API
   version: "1.0.0"
   description: |
-    Ctxfy (Contextify) API for spaces, collections, sources, artifacts, user API keys, and S3 uploads.
+    Ctxfy API for AI context management: spaces, sources, artifacts, and file uploads.
+    Save conversation state as snapshots, extract structured context and artifacts.
+    API access is available on Pro and Enterprise plans.
     All routes under `/api/v1` require authentication via `Authorization: Bearer <api_key>`.
-    Use a User API key; it grants access to all resources of the key owner.
     Public endpoints: `/health`, `/metrics`.
 
     **Rate limiting:** Free plan — 10 req/min, Pro and above — 100 req/min.

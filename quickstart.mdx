@@ -5,11 +5,11 @@ description: Get started with Ctxfy API in minutes.
 
 ## Overview
 
-This guide walks you through creating a space, adding a source, and uploading a file via the Ctxfy API.
+This guide walks you through creating a space, uploading a source (e.g. AI conversation or document), and checking processing status via the Ctxfy API.
 
 ## Prerequisites
 
-- Base URL of the API (e.g. `https://api.ctxfy.io` or your deployment)
+- Base URL of the API (e.g. `https://api.ctxfy.com` or your deployment)
 - API Key from the Ctxfy dashboard or API
 
 ## 1. Create a space
@@ -18,7 +18,7 @@ This guide walks you through creating a space, adding a source, and uploading a 
 curl -X POST https://your-api-host/api/v1/spaces \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"name": "My Workspace", "description": "First space"}'
+  -d '{"name": "My Project", "description": "AI context for my project"}'
 ```
 
 Response includes `data.id` — the `spaceId` for subsequent calls.
@@ -38,22 +38,21 @@ Use `parentId` to create nested collections.
 
 ## 3. Create a source
 
-Create a source by type. For a URL (URI type):
+Create a source by type. For pasted content (e.g. AI conversation), use `CONTENT`:
 
 ```bash
 curl -X POST https://your-api-host/api/v1/spaces/{spaceId}/sources \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "type": "URI",
-    "initial_data": {"url": "https://example.com/article"},
+    "type": "CONTENT",
+    "initial_data": {"data": "Your AI conversation or document text here..."},
     "instructions": {},
-    "name": "Sample Article",
-    "collectionId": "YOUR_COLLECTION_ID"
+    "name": "My Chat Snapshot"
   }'
 ```
 
-Source types: `URI`, `FILE`, `CONTENT`, `COMPOSITION`. See [Concepts](/concepts#sources) for `initial_data` per type.
+For URLs use `URI`, for uploaded files use `FILE`. See [Concepts](/concepts#sources) for `initial_data` per type.
 
 ## 4. Upload a file (S3 presigned URL)
 
