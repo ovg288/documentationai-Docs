@@ -3,21 +3,34 @@ title: Changelog
 description: API updates and release notes for Ctxfy.
 ---
 
-## Public documentation updates
-
-<Update label="2026-02-12" description="Marketing content added" tags={["docs", "marketing"]}>
+<Update label="2026-01-28" description="Support tickets" tags={["api", "feature"]}>
 ## What changed
-- Added marketing materials across Documentation, Help Center, and FAQs.
-- New FAQs: Why Ctxfy?, Use Cases, Pricing & Tokens, Security & Privacy.
-- Introduction: "Why Ctxfy?" section with value props (resume in 30s, cut costs, find code, works with any AI).
-- Help Center: value proposition banner, marketing cards linking to FAQs.
-- Quickstart and Concepts: brief marketing hooks and links to Help Center.
+- **Support tickets** — `POST /api/v1/support/tickets` for technical and billing support requests.
+- Request body: `type`, `reply_address`, `message`. Enriched with user context before delivery.
 </Update>
 
-<Update label="2026-02-12" description="Documentation aligned with ctxfy.com" tags={["docs"]}>
+<Update label="2025-12-18" description="User API keys & S3 upload" tags={["api", "feature"]}>
 ## What changed
-- Aligned service description with ctxfy.com: AI context management, conversation state snapshots, extracted artifacts (code, schemas, diagrams).
-- Spaces described as project containers. Sources as raw input (conversations, documents, files). Artifacts as code, schemas, diagrams, context.
-- API availability note (Pro and Enterprise plans). Base URL examples updated to api.ctxfy.com.
-- Quickstart example changed to CONTENT type (pasted AI conversation) to match primary use case.
+- **User API keys** — `POST /api/v1/api-keys`, `GET /api/v1/api-keys`, `DELETE /api/v1/api-keys/:keyId`. Keys grant access to all resources of the owner. Raw key returned only on create.
+- **S3 presigned upload** — `POST /api/v1/upload/s3` returns presigned URL for file uploads. Use `fileKey` from response when creating FILE-type sources.
+</Update>
+
+<Update label="2025-11-25" description="Source actions & artifacts" tags={["api", "feature"]}>
+## What changed
+- **Source lifecycle** — `PATCH /sources/:sourceId/toggle-pin`, `POST /sources/:sourceId/reprocess`, `POST /sources/:sourceId/cancel`, `POST /sources/:sourceId/refresh`, `POST /sources/:sourceId/restore`.
+- **Artifacts** — `GET /spaces/:spaceId/artifacts`, `PUT /source-artifact/:artifactId/process`, `PUT /source-artifact/:artifactId/promote`.
+</Update>
+
+<Update label="2025-10-28" description="Sources & collections" tags={["api", "feature"]}>
+## What changed
+- **Collections** — `POST /spaces/:spaceId/collections`, `GET /spaces/:spaceId/collections` (tree). Hierarchical organization with `parentId`.
+- **Sources** — `POST /spaces/:spaceId/sources`, `GET /sources/:sourceId`, `PATCH /sources/:sourceId`, `DELETE /sources/:sourceId`. Types: URI, FILE, CONTENT, COMPOSITION.
+- **Source listing** — `GET /spaces/:spaceId/sources`, `GET /collections/:collectionId/sources`.
+</Update>
+
+<Update label="2025-09-22" description="Initial release" tags={["api", "launch"]}>
+## What changed
+- **Spaces** — `POST /api/v1/spaces`, `GET /api/v1/spaces`, `GET /api/v1/spaces/:spaceId`, `PUT /api/v1/spaces/:spaceId`, `DELETE /api/v1/spaces/:spaceId`.
+- **Health & metrics** — `GET /health`, `GET /metrics` (public, no auth).
+- **Authentication** — API key required for `/api/v1/*`. Rate limiting: Free 10 req/min, Pro 100 req/min.
 </Update>
