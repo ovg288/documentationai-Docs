@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: ctxfy-vault API
+  title: Ctxfy API
   version: "1.0.0"
   description: |
-    Vault API for spaces, collections, sources, artifacts, user API keys, and S3 uploads.
-    All routes under `/api/v1` require authentication via `Authorization: Bearer <token>`.
-    Token can be a Firebase ID token (JWT) or a user API key (same header; key grants access to all resources of the key owner).
+    Ctxfy (Contextify) API for spaces, collections, sources, artifacts, user API keys, and S3 uploads.
+    All routes under `/api/v1` require authentication via `Authorization: Bearer <api_key>`.
+    Use a User API key; it grants access to all resources of the key owner.
     Public endpoints: `/health`, `/metrics`.
 
     **Rate limiting:** Free plan — 10 req/min, Pro and above — 100 req/min (Redis-based).
@@ -426,7 +426,7 @@ paths:
                 $ref: "#/components/schemas/ErrorEnvelope"
     patch:
       summary: Patch source
-      description: Intended for system services but protected by Firebase auth in the current router.
+      description: Intended for system services but protected by auth in the current router.
       security:
         - FirebaseBearer: []
       parameters:
@@ -909,7 +909,7 @@ paths:
   /api/v1/upload/s3:
     post:
       summary: Create S3 presigned upload
-      description: Returns a presigned URL for uploading a file to S3. Requires authentication (JWT or API key).
+      description: Returns a presigned URL for uploading a file to S3. Requires API key authentication.
       security:
         - FirebaseBearer: []
       requestBody:
@@ -949,7 +949,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Firebase ID token (JWT) or user API key (Bearer token)
+      description: User API key (Bearer token)
   parameters:
     SpaceId:
       name: spaceId

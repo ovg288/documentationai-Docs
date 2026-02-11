@@ -1,22 +1,22 @@
 ---
 title: Quickstart
-description: Get started with ctxfy-vault API in minutes.
+description: Get started with Ctxfy API in minutes.
 ---
 
 ## Overview
 
-This guide walks you through creating a space, adding a source, and uploading a file via the ctxfy-vault API.
+This guide walks you through creating a space, adding a source, and uploading a file via the Ctxfy API.
 
 ## Prerequisites
 
 - Base URL of the API (e.g. `https://api.ctxfy.io` or your deployment)
-- Firebase ID Token or User API Key
+- API Key from the Ctxfy dashboard or API
 
 ## 1. Create a space
 
 ```bash
 curl -X POST https://your-api-host/api/v1/spaces \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"name": "My Workspace", "description": "First space"}'
 ```
@@ -29,7 +29,7 @@ Organize sources in a collection:
 
 ```bash
 curl -X POST https://your-api-host/api/v1/spaces/{spaceId}/collections \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"name": "Documents", "parentId": null}'
 ```
@@ -42,7 +42,7 @@ Create a source by type. For a URL (URI type):
 
 ```bash
 curl -X POST https://your-api-host/api/v1/spaces/{spaceId}/sources \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "type": "URI",
@@ -61,7 +61,7 @@ For file-based sources, get a presigned URL first:
 
 ```bash
 curl -X POST https://your-api-host/api/v1/upload/s3 \
-  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"filename": "report.pdf", "contentType": "application/pdf", "size": 102400}'
 ```
@@ -72,7 +72,7 @@ Response: `uploadUrl`, `publicUrl`, `fileKey`. Upload the file with `PUT` to `up
 
 ```bash
 curl https://your-api-host/api/v1/sources/{sourceId} \
-  -H "Authorization: Bearer YOUR_TOKEN"
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 Status lifecycle: `CREATED` → `PENDING` → `PROCESSING` → `COMPLETED` or `FAILED`.
@@ -85,10 +85,10 @@ Status lifecycle: `CREATED` → `PENDING` → `PROCESSING` → `COMPLETED` or `F
   </Card>
 
   <Card title="Authentication" href="/authentication" icon="lock" horizontal="false">
-    Firebase JWT and API Keys.
+    API Keys.
   </Card>
 
-  <Card title="API Reference" href="/api-reference" icon="code" horizontal="false">
+  <Card title="API Reference" href="/authentication" icon="code" horizontal="false">
     Full endpoint specification.
   </Card>
 </Columns>

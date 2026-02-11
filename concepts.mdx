@@ -1,11 +1,11 @@
 ---
 title: Core Concepts
-description: Spaces, collections, sources, and artifacts in ctxfy-vault.
+description: Spaces, collections, sources, and artifacts in Ctxfy.
 ---
 
 ## Overview
 
-ctxfy-vault organizes content in a hierarchical model: **Spaces** → **Collections** → **Sources** → **Artifacts**.
+Ctxfy organizes content in a hierarchical model: **Spaces** → **Collections** → **Sources** → **Artifacts**.
 
 ## Spaces
 
@@ -76,4 +76,4 @@ For file-based sources, use the presigned upload flow:
 3. `PUT` file to `uploadUrl`
 4. Create source with type `FILE` and `fileKey` in `initial_data`
 
-Requires authentication (JWT or API key). Rate limits apply (Free: 10/min, Pro: 100/min).
+Requires API key authentication. Rate limits apply (Free: 10/min, Pro: 100/min).

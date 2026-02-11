@@ -1,50 +1,27 @@
 ---
 title: Authentication
-description: Firebase JWT and User API Key authentication for ctxfy-vault API.
+description: API Key authentication for Ctxfy API.
 ---
 
 ## Overview
 
-The ctxfy-vault API supports two authentication methods. Both use the same header format:
+The Ctxfy API uses **User API Keys** for authentication. Include the key in every request:
 
 ```
-Authorization: Bearer <token>
+Authorization: Bearer <api_key>
 ```
-
-## Firebase ID Token (JWT)
-
-Standard user authentication via Firebase. Obtain the ID token from your Firebase client SDK and send it in every request.
-
-```bash
-curl https://your-api-host/api/v1/spaces \
-  -H "Authorization: Bearer YOUR_FIREBASE_ID_TOKEN"
-```
-
-<ParamField header="Authorization" param-type="string" required="true">
-  `Bearer <Firebase ID Token>`
-</ParamField>
-
-The backend validates the token via Firebase Admin SDK. `userId` (uid) and stripe role are passed to the request context.
 
 ## User API Key
 
-For server-side integrations, scripts, or CI/CD, use a User API Key. The key grants **full access to all resources of the key owner** (all spaces, collections, sources).
+Create and manage API keys in the Ctxfy dashboard or via the API. Each key grants **full access to all resources of the key owner** (all spaces, collections, sources).
 
 ### Creating an API key
 
-Use Firebase JWT to create a key. The raw key is returned **only once** in the response — store it securely.
+Create API keys in the **Ctxfy dashboard**. The raw key is shown **only once** at creation — store it securely. Optional: set a name and expiration date.
 
-```bash
-curl -X POST https://your-api-host/api/v1/api-keys \
-  -H "Authorization: Bearer YOUR_FIREBASE_ID_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "My Integration", "expiration_date": "2026-12-31T23:59:59Z"}'
-```
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `name` | No | Human-readable name |
-| `expiration_date` | No | ISO 8601 datetime. Omit for no expiry |
+<Callout kind="warning">
+  The raw `api_key` value is returned only on creation. If lost, revoke the key and create a new one.
+</Callout>
 
 ### Using an API key
 
@@ -53,13 +30,11 @@ curl https://your-api-host/api/v1/spaces \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-Same header as JWT — the backend distinguishes by format and validates accordingly.
-
 ### Managing keys
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | /api/v1/api-keys | Create key (Firebase JWT required) |
+| POST | /api/v1/api-keys | Create key |
 | GET | /api/v1/api-keys | List keys (no secrets returned) |
 | DELETE | /api/v1/api-keys/:keyId | Revoke key |
 
@@ -74,9 +49,9 @@ No authentication required:
 
 <Expandable title="401 Unauthorized" default-open="false">
 
-- Token is expired — refresh Firebase token or create a new API key.
-- `Authorization` header missing or malformed — use `Bearer <token>` with a space before the token.
-- API key revoked — create a new key via Firebase JWT.
+- Key expired — create a new key.
+- Key revoked — create a new key.
+- `Authorization` header missing or malformed — use `Bearer <api_key>` with a space before the key.
 
 </Expandable>
 

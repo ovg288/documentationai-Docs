@@ -4,17 +4,17 @@ description: Troubleshooting 401 and 429 errors.
 ---
 ## 401 Unauthorized
 
-### Token expired
+### Key expired or revoked
 
-Firebase ID tokens expire. Refresh the token or obtain a new one from your Firebase client. For API keys, ensure the key has not been revoked.
+API keys may have an expiration date. If expired, or if the key was revoked, create a new key in the Ctxfy dashboard.
 
 ### Missing or malformed header
 
-Use exactly: `Authorization: Bearer <token>` with a space before the token. Do not omit `Bearer` or use different header names.
+Use exactly: `Authorization: Bearer <api_key>` with a space before the key. Do not omit `Bearer` or use different header names.
 
-### Wrong token type
+### Invalid key
 
-Ensure you are using a valid Firebase ID token or a User API key. Other JWT formats are not accepted.
+Ensure you are using a valid API key created in the Ctxfy dashboard. Copy the key exactly; any typo will result in 401.
 
 ## 429 Too Many Requests
 
