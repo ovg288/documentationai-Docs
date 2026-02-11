@@ -1,26 +1,52 @@
 ---
 title: Help Center
-description: FAQs, guides, and support for Ctxfy API.
+description: FAQs, guides, and support for Ctxfy.
 ---
 
-<Columns cols={2}>
-  <Card title="FAQs" icon="help-circle" href="/help-center/faq/getting-started" horizontal>
-    Getting started and common questions.
+## Why Ctxfy?
+
+<Callout kind="info" collapsed="false">
+  **Stop losing hours to AI context recovery.** Save conversation state as snapshots, resume in 30 seconds, cut token costs by 65–75%. Works with ChatGPT, Claude, and any AI tool.
+</Callout>
+
+<Columns cols="3">
+  <Card title="Why Ctxfy?" href="/help-center/faq/why-ctxfy" icon="sparkles" horizontal="false">
+    Value proposition and measurable benefits.
+  </Card>
+  <Card title="Use Cases" href="/help-center/faq/use-cases" icon="layers" horizontal="false">
+    What works best. Architecture, planning, code reviews.
+  </Card>
+  <Card title="Pricing & Tokens" href="/help-center/faq/pricing-tokens" icon="coins" horizontal="false">
+    Plans, tokens, API access.
+  </Card>
+</Columns>
+
+## FAQs & Guides
+
+<Columns cols="2">
+  <Card title="Getting Started" icon="help-circle" href="/help-center/faq/getting-started" horizontal>
+    Quick answers for integrators.
+  </Card>
+  <Card title="Security & Privacy" icon="shield" href="/help-center/faq/security-privacy" horizontal>
+    Data protection and ownership.
   </Card>
   <Card title="Troubleshooting" icon="alert-triangle" href="/help-center/troubleshooting/auth-rate-limits" horizontal>
     Authentication and rate limit issues.
   </Card>
-  <Card title="Guides" icon="book-open" href="/help-center/guides/first-request" horizontal>
-    Step-by-step integration guides.
-  </Card>
-  <Card title="Changelog" icon="clock" href="/changelog" horizontal>
-    API updates and release notes.
+  <Card title="First API Request" icon="book-open" href="/help-center/guides/first-request" horizontal>
+    Step-by-step integration guide.
   </Card>
 </Columns>
 
+## Changelog
+
+<Card title="Changelog" icon="clock" href="/changelog" horizontal>
+  API updates and release notes.
+</Card>
+
 ## Support
 
-For technical issues, feature requests, or billing questions, use the support ticket endpoint:
+For technical issues, feature requests, or billing questions:
 
 `POST /api/v1/support/tickets`
 

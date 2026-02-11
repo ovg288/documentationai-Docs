@@ -48,7 +48,11 @@
             "icon": "help-circle",
             "expandable": false,
             "pages": [
-              { "title": "Getting Started", "path": "help-center/faq/getting-started" }
+              { "title": "Why Ctxfy?", "path": "help-center/faq/why-ctxfy" },
+              { "title": "Getting Started", "path": "help-center/faq/getting-started" },
+              { "title": "Use Cases", "path": "help-center/faq/use-cases" },
+              { "title": "Pricing & Tokens", "path": "help-center/faq/pricing-tokens" },
+              { "title": "Security & Privacy", "path": "help-center/faq/security-privacy" }
             ]
           },
           {
