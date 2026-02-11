@@ -35,7 +35,7 @@ A **source** is the main content unit. It has a `type`, processing `status`, and
 | Type | Description | `initial_data` |
 |------|-------------|----------------|
 | **URI** | Web URL | `url` or `uri` (required) |
-| **FILE** | File in S3 | `data` / fileKey (from S3 upload) |
+| **FILE** | File in S3 | `data` — fileKey from POST /upload/s3 response |
 | **CONTENT** | Inline content | `data` |
 | **COMPOSITION** | Combined sources | `source_ids` (array) |
 
@@ -74,6 +74,6 @@ For file-based sources, use the presigned upload flow:
 1. `POST /api/v1/upload/s3` with `filename`, `contentType`, `size`
 2. Receive `uploadUrl`, `publicUrl`, `fileKey`
 3. `PUT` file to `uploadUrl`
-4. Create source with type `FILE` and `fileKey` in `initial_data`
+4. Create source with type `FILE` and `initial_data: { "data": "<fileKey>" }`
 
 Requires API key authentication. Rate limits apply (Free: 10/min, Pro: 100/min).

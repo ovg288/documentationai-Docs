@@ -8,7 +8,7 @@ info:
     Use a User API key; it grants access to all resources of the key owner.
     Public endpoints: `/health`, `/metrics`.
 
-    **Rate limiting:** Free plan — 10 req/min, Pro and above — 100 req/min (Redis-based).
+    **Rate limiting:** Free plan — 10 req/min, Pro and above — 100 req/min.
     Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.
     On exceed: 429 Too Many Requests, `Retry-After` header.
 servers:
@@ -426,7 +426,7 @@ paths:
                 $ref: "#/components/schemas/ErrorEnvelope"
     patch:
       summary: Patch source
-      description: Intended for system services but protected by auth in the current router.
+      description: Partially updates source metadata.
       security:
         - FirebaseBearer: []
       parameters:
@@ -563,7 +563,7 @@ paths:
   /api/v1/sources/{sourceId}/reprocess:
     post:
       summary: Reprocess source
-      description: Triggers SourceReprocessWorkflow. Source must be COMPLETED or FAILED with content in S3. Publishes SourceReprocessRequested to RMQ. Per rmq.md.
+      description: Triggers reprocessing of a source. Source must be COMPLETED or FAILED with content available.
       security:
         - FirebaseBearer: []
       parameters:
@@ -601,7 +601,7 @@ paths:
   /api/v1/sources/{sourceId}/cancel:
     post:
       summary: Cancel source processing
-      description: Triggers CancelSourceWorkflow. Publishes SourceCancelRequested to RMQ. Per rmq.md.
+      description: Cancels source processing.
       security:
         - FirebaseBearer: []
       parameters:
@@ -634,7 +634,7 @@ paths:
   /api/v1/sources/{sourceId}/refresh:
     post:
       summary: Refresh source
-      description: Triggers RetrieveSourceRawContentWorkflow with force_re_retrieve. Only URL or FILE sources. Publishes SourceRefreshRequested to RMQ. Per rmq.md.
+      description: Re-fetches source content. Only URL or FILE sources.
       security:
         - FirebaseBearer: []
       parameters:
@@ -742,7 +742,7 @@ paths:
   /api/v1/source-artifact/{artifactId}/promote:
     put:
       summary: Promote artifact
-      description: "Promotes artifact to space. Optional body: title, description. Publishes ArtifactPromoteRequested to RMQ. Per rmq.md."
+      description: "Promotes artifact to space. Optional body: title, description."
       security:
         - FirebaseBearer: []
       parameters:
@@ -1190,6 +1190,7 @@ components:
     CollectionTreeResponse:
       type: object
       additionalProperties: false
+      description: Collection node. The `children` array contains nested nodes with the same structure (recursive tree).
       properties:
         id:
           type: string
@@ -1208,8 +1209,10 @@ components:
           format: date-time
         children:
           type: array
+          description: Child collection nodes (same structure, recursive).
           items:
-            $ref: "#/components/schemas/CollectionTreeResponse"
+            type: object
+            additionalProperties: true
       required: [id, spaceId, name, createdAt, updatedAt, children]
     CreateSourceRequest:
       type: object
@@ -1236,7 +1239,9 @@ components:
     CreateSourceRequestInitialData:
       type: object
       additionalProperties: false
-      description: For type URI, either url or uri is required (both accepted). For COMPOSITION use source_ids; for FILE/CONTENT use data when needed.
+      description: |
+        URI: url or uri required. COMPOSITION: source_ids required. FILE: data with fileKey from S3 presign response.
+        CONTENT: data with inline content.
       properties:
         url:
           type: string
@@ -1254,11 +1259,11 @@ components:
         data:
           type: string
           nullable: true
-          description: For type FILE or CONTENT when applicable.
+          description: For FILE use fileKey from POST /upload/s3. For CONTENT use inline content.
     SourceReprocessRequest:
       type: object
       additionalProperties: false
-      description: Optional body for source reprocess. Per rmq.md.
+      description: Optional body for source reprocess.
       properties:
         run_context_extraction:
           type: boolean
@@ -1272,7 +1277,7 @@ components:
     SourceRefreshRequest:
       type: object
       additionalProperties: false
-      description: Optional body for source refresh. Per rmq.md. Only URL or FILE sources.
+      description: Optional body for source refresh. Only URL or FILE sources.
       properties:
         run_context_extraction:
           type: boolean
@@ -1283,7 +1288,7 @@ components:
     PromoteArtifactRequest:
       type: object
       additionalProperties: false
-      description: Optional body for artifact promotion. Per rmq.md (title/name, description/content).
+      description: Optional body for artifact promotion (title, description).
       properties:
         title:
           type: string

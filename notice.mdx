@@ -11,4 +11,4 @@ This documentation describes the Ctxfy (Contextify) HTTP API. Content is kept in
 
 - Page content: edit `.mdx` files in this repo.
 - Navigation: update `documentation.json`.
-- API reference: the API Reference tab is generated from `openapi.yaml`; keep it in sync with the canonical OpenAPI spec in the main repo.
+- API reference: the API Reference tab is generated from `openapi.yaml`. Copy from `.cerses/api-documentation.yaml`, then apply Public Doc rules (Ctxfy title, API keys only), remove internal references (RMQ, workflows, rmq.md, system services), and fix `CollectionTreeResponse` circular ref.

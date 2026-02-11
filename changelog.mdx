@@ -5,10 +5,10 @@ description: API updates and release notes for Ctxfy.
 
 ## Public documentation updates
 
-<Update label="2026-02-12" description="Documentation refresh" tags={["docs"]}>
+<Update label="2026-02-12" description="Documentation sync" tags={["docs"]}>
 ## What changed
-- Aligned Public Documentation with Ctxfy branding. Service name: Ctxfy (Contextify).
-- Authentication documented for API keys only.
-- Introduction, Quickstart, Core Concepts, and Help Center pages updated.
-- OpenAPI specification synced with service spec.
+- API specification synced with implementation. CreateSourceRequestInitialData clarified for FILE (fileKey from presign).
+- Public Documentation aligned with Ctxfy branding, API keys only.
+- OpenAPI spec synced from `.cerses/api-documentation.yaml`. CollectionTreeResponse circular ref fixed for doc generator.
+- Quickstart and Concepts updated with precise FILE source flow (initial_data.data = fileKey).
 </Update>
