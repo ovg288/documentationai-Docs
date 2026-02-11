@@ -1,20 +1,29 @@
 ---
-title: Where does this documentation come from?
-description: Clarify that this site is a sample starter kit.
+title: Getting Started with ctxfy-vault
+description: Quick answers for new integrators.
 ---
-## Short answer
+## What is ctxfy-vault?
 
-This is sample content bundled with the starter kit. It is not your product documentation yet.
+ctxfy-vault is the HTTP API for the knowledge base: spaces, collections, sources, artifacts, and S3 uploads. Use it to integrate document processing and AI workflows into your app.
 
-## What to do next
+## How do I authenticate?
 
-- Replace each page with your real information.
+Use `Authorization: Bearer <token>` on every request. Two options:
 
-- Update navigation labels from dashboard editor or from `documentation.json`.
+- **Firebase ID Token (JWT)** — for user-facing apps; get the token from Firebase Auth.
+- **User API Key** — for scripts and server-side; create via `POST /api/v1/api-keys` (requires Firebase JWT). The raw key is returned only once.
 
-- Remove sections you do not plan to maintain.
+## What is the base URL?
 
-<Callout kind="info" collapsed="false">
-  If you are unsure where a page comes from, look for its `.mdx` file in this repo and edit it directly.
-</Callout>
+Use the URL of your deployment (e.g. `https://api.ctxfy.io` or the host provided to you). Public endpoints like `/health` and `/metrics` do not require auth.
 
+## What are the rate limits?
+
+- **Free plan:** 10 requests/minute  
+- **Pro and above:** 100 requests/minute  
+
+Check `X-RateLimit-Remaining` and `Retry-After` on 429 responses.
+
+## Where is the full API spec?
+
+See the [API Reference](/authentication) tab and the OpenAPI specification (`openapi.yaml`). All endpoints under `/api/v1` are documented there.

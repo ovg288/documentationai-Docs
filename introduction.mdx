@@ -1,78 +1,77 @@
 ---
-title: Set Up Your Documentation
-description: 'A minimal, editable starting point for your own documentation site.'
+title: Ctxfy API
+description: Vault API for spaces, collections, sources, artifacts, and file uploads.
 ---
-## Start here (5–10 minutes)
+## Overview
 
-1. Edit this page so it describes your product and audience.
+**Ctxfy** (Contextify) provides HTTP API access to your knowledge base: spaces, collections, sources, artifacts, and S3 uploads. All API routes under `/api/v1` require authentication.
 
-2. Customize your onboarding flow in the [Quickstart](/quickstart) page.
-
-3. Delete or rewrite any sections and pages you do not plan to use.
-
-4. Invite a teammate to review the structure and concepts starting from [Core Concepts](/concepts).
-
-<Callout kind="alert" collapsed="false">
-  This site ships with placeholder content. Edit the text, links, and examples so they match your product before sharing it with others.
+<Callout kind="info" collapsed="false">
+  Use [Quickstart](/quickstart) to integrate in minutes. For authentication details, see [Authentication](/authentication).
 </Callout>
 
-## What you get
+## Core resources
 
 <Columns cols="3">
-  <Card title="Docs structure" href="/quickstart" icon="book-open" horizontal="false">
-    A clear navigation layout with starter pages you can rename or replace.
+  <Card title="Spaces" href="/quickstart#1-create-a-space" icon="layers" horizontal="false">
+    Top-level containers. Create spaces, list, update, delete.
   </Card>
 
-  <Card title="Components" href="#try-a-few-components" icon="layout-grid" horizontal="false" target="_self">
-    Prebuilt blocks like Callouts, Steps, Tabs, and Cards to keep pages clean.
+  <Card title="Collections" href="/concepts#collections" icon="folder" horizontal="false">
+    Hierarchical organization within a space. Tree structure with parent-child.
   </Card>
 
-  <Card title="API reference hook" href="/authentication" icon="code" horizontal="false">
-    A placeholder `openapi.yaml` you can swap with your real API spec.
+  <Card title="Sources" href="/concepts#sources" icon="file-text" horizontal="false">
+    URI, FILE, CONTENT, or COMPOSITION. Processing pipeline with status lifecycle.
+  </Card>
+
+  <Card title="Artifacts" href="/concepts#artifacts" icon="package" horizontal="false">
+    Extracted outputs from sources. Process and promote to space.
+  </Card>
+
+  <Card title="API Keys" href="/authentication#user-api-key" icon="key" horizontal="false">
+    User-scoped keys for server-side or script access. Full access to user resources.
+  </Card>
+
+  <Card title="S3 Upload" href="/quickstart#3-upload-a-file" icon="upload" horizontal="false">
+    Presigned URLs for direct file uploads to S3.
   </Card>
 </Columns>
 
-## Make your first edit
+## Authentication
 
-<Steps>
-  <Step title="Rewrite this page" icon="edit" title-type="p">
-    Update the title, description, and sections in `introduction` so they reflect your product and documentation goals.
-  </Step>
+All requests to `/api/v1/*` (except `/health` and `/metrics`) require:
 
-  <Step title="Customize Quickstart" icon="zap" title-type="p">
-    Replace the steps in `quickstart` with your real onboarding flow so new readers know exactly how to get started.
-  </Step>
+```
+Authorization: Bearer <api_key>
+```
 
-  <Step title="Remove or repurpose samples" icon="trash" title-type="p">
-    Delete unused sample sections and pages, or rewrite them with your own content to keep navigation focused.
-  </Step>
-</Steps>
+Use a **User API Key** for authentication. See [Authentication](/authentication) for details.
 
-## Try a few components
+## Rate limiting
 
-You can browse the component gallery in the [Components](/components) page for ready-to-use examples of Cards, Callouts, Steps, Tabs, and more.
+- **Free plan:** 10 requests/minute
+- **Pro and above:** 100 requests/minute
 
-## Continue to the rest of the sample
+Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.  
+On exceed: `429 Too Many Requests` with `Retry-After` header.
+
+## Next steps
 
 <Columns cols="2">
   <Card title="Quickstart" href="/quickstart" icon="zap" horizontal="false">
-    See the minimal setup flow.
+    Step-by-step integration guide.
   </Card>
 
   <Card title="Core Concepts" href="/concepts" icon="layers" horizontal="false">
-    Learn how pages, navigation, and components fit together.
-  </Card>
-
-  <Card title="Components" href="/components" icon="code" horizontal="false">
-    A small gallery of built-in components.
+    Spaces, collections, sources, artifacts.
   </Card>
 
   <Card title="Authentication" href="/authentication" icon="lock" horizontal="false">
-    Example layout for an auth guide.
+    API Keys.
   </Card>
 
-  <Card title="Help Center" href="/help-center" icon="help-circle" horizontal="false">
-    Starter FAQ, guides, and troubleshooting templates.
+  <Card title="API Reference" href="/authentication" icon="code" horizontal="false">
+    Full endpoint specification.
   </Card>
 </Columns>
-

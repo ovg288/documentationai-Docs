@@ -1,57 +1,88 @@
 ---
-title: Authentication (Sample)
-description: Sample guidance for authentication and OpenAPI usage.
+title: Authentication
+description: Firebase JWT and User API Key authentication for ctxfy-vault API.
 ---
 
 ## Overview
 
-This is sample content. Replace tokens, URLs, headers, and flows with your real authentication requirements.
+The ctxfy-vault API supports two authentication methods. Both use the same header format:
 
-<Callout kind="info">
+```
+Authorization: Bearer <token>
+```
 
-This site ships with placeholder content for authentication. Update this page and `openapi.yaml` to match your real API before sharing with users.
+## Firebase ID Token (JWT)
 
-</Callout>
-
-This API uses OpenAPI to describe endpoints, parameters, and responses. The reference is generated from `openapi.yaml`, so keep that file up to date as your API evolves.
-
-## Authentication
-
-Use a bearer token in the `Authorization` header for authenticated requests. Replace the base URL and token with values for your own API.
+Standard user authentication via Firebase. Obtain the ID token from your Firebase client SDK and send it in every request.
 
 ```bash
-curl https://api.example.com/v1/example \
-  -H "Authorization: Bearer YOUR_TOKEN"
+curl https://your-api-host/api/v1/spaces \
+  -H "Authorization: Bearer YOUR_FIREBASE_ID_TOKEN"
 ```
 
 <ParamField header="Authorization" param-type="string" required="true">
-  `Bearer YOUR_TOKEN`
+  `Bearer <Firebase ID Token>`
 </ParamField>
 
-## Keep OpenAPI in sync
+The backend validates the token via Firebase Admin SDK. `userId` (uid) and stripe role are passed to the request context.
 
-Define your authentication and base settings in `openapi.yaml` so the API Reference stays accurate and consistent.
+## User API Key
 
-At a minimum, you should:
+For server-side integrations, scripts, or CI/CD, use a User API Key. The key grants **full access to all resources of the key owner** (all spaces, collections, sources).
 
-- Define one or more security schemes that describe how clients authenticate (for example, bearer token, API key in a header, or other scheme).
-- Reference those security schemes on operations that require authentication so they are clearly marked as secured.
-- Set the correct base URL and any required global headers (for example, versioning or tenant headers) so example requests are copy-pasteable.
+### Creating an API key
 
-When your real authentication flow changes (for example, new header names, token formats, or additional requirements), update `openapi.yaml`. The generated API Reference will then reflect your current auth model without needing to edit each endpoint page by hand.
+Use Firebase JWT to create a key. The raw key is returned **only once** in the response — store it securely.
 
-## Using the API reference
+```bash
+curl -X POST https://your-api-host/api/v1/api-keys \
+  -H "Authorization: Bearer YOUR_FIREBASE_ID_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "My Integration", "expiration_date": "2026-12-31T23:59:59Z"}'
+```
 
-Use the API Reference to explore endpoints, required parameters, and example responses. When you change authentication headers or base URLs, update `openapi.yaml` so the generated reference matches what your clients should use.
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | No | Human-readable name |
+| `expiration_date` | No | ISO 8601 datetime. Omit for no expiry |
 
-## Common mistakes
+### Using an API key
 
-<Expandable title="Why am I getting a 401?" default-open="false">
+```bash
+curl https://your-api-host/api/v1/spaces \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
 
-Verify that:
+Same header as JWT — the backend distinguishes by format and validates accordingly.
 
-- The token is valid and not expired.
-- The token is sent in the `Authorization` header.
-- The header value includes the `Bearer` prefix and a space before the token.
+### Managing keys
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | /api/v1/api-keys | Create key (Firebase JWT required) |
+| GET | /api/v1/api-keys | List keys (no secrets returned) |
+| DELETE | /api/v1/api-keys/:keyId | Revoke key |
+
+## Public endpoints
+
+No authentication required:
+
+- `GET /health` — service and dependency health
+- `GET /metrics` — Prometheus metrics
+
+## Common issues
+
+<Expandable title="401 Unauthorized" default-open="false">
+
+- Token is expired — refresh Firebase token or create a new API key.
+- `Authorization` header missing or malformed — use `Bearer <token>` with a space before the token.
+- API key revoked — create a new key via Firebase JWT.
+
+</Expandable>
+
+<Expandable title="429 Too Many Requests" default-open="false">
+
+- Rate limit exceeded. Free plan: 10 req/min; Pro: 100 req/min.
+- Check `X-RateLimit-Remaining` and `Retry-After` headers.
 
 </Expandable>

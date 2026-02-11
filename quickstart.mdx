@@ -1,58 +1,94 @@
 ---
 title: Quickstart
-description: Minimal steps to customize this sample starter kit.
+description: Get started with ctxfy-vault API in minutes.
 ---
+
 ## Overview
 
-<Callout kind="alert" collapsed="false">
-  This site ships with placeholder content. Use this quickstart to replace it with your real product docs.
-</Callout>
+This guide walks you through creating a space, adding a source, and uploading a file via the ctxfy-vault API.
 
-## 1. Update a page
+## Prerequisites
 
-<Steps>
-  <Step title="Edit introduction" icon="edit" title-type="p">
-    Replace the sample introduction with a concise overview of your product and the key actions you want new users to take first.
-  </Step>
+- Base URL of the API (e.g. `https://api.ctxfy.io` or your deployment)
+- Firebase ID Token or User API Key
 
-  <Step title="Preview your change" icon="monitor" title-type="p">
-    Use your dashboard board editor to confirm the updated introduction looks and reads as expected.
-  </Step>
-</Steps>
+## 1. Create a space
 
-## 2. Add a new page
+```bash
+curl -X POST https://your-api-host/api/v1/spaces \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "My Workspace", "description": "First space"}'
+```
 
-<Steps>
-  <Step title="Add a page" icon="file-text" title-type="p">
-    Create a new `page` by clicking on the + button from the left navigation bar of dashboard. If you are using git, create the .mdx file and add to navigation bar using documentation.json
-  </Step>
-</Steps>
+Response includes `data.id` — the `spaceId` for subsequent calls.
 
-## Example onboarding flow (replace with yours)
+## 2. Create a collection (optional)
 
-1. Sign up for an account and verify your email.
+Organize sources in a collection:
 
-2. Create your first workspace, project, or environment.
+```bash
+curl -X POST https://your-api-host/api/v1/spaces/{spaceId}/collections \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Documents", "parentId": null}'
+```
 
-3. Add one integration or data source to connect your existing tools.
+Use `parentId` to create nested collections.
 
-4. Complete a guided action (for example, run your first job or publish your first resource).
+## 3. Create a source
 
-5. Invite a teammate and assign a basic role or permission.
+Create a source by type. For a URL (URI type):
 
-## 3. Connect API Reference (optional)
+```bash
+curl -X POST https://your-api-host/api/v1/spaces/{spaceId}/sources \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "URI",
+    "initial_data": {"url": "https://example.com/article"},
+    "instructions": {},
+    "name": "Sample Article",
+    "collectionId": "YOUR_COLLECTION_ID"
+  }'
+```
 
-If you have an API, replace `openapi.yaml` with your real OpenAPI file. If you do not need an API reference, remove that tab either from dashboard or  `documentation.json`.
+Source types: `URI`, `FILE`, `CONTENT`, `COMPOSITION`. See [Concepts](/concepts#sources) for `initial_data` per type.
+
+## 4. Upload a file (S3 presigned URL)
+
+For file-based sources, get a presigned URL first:
+
+```bash
+curl -X POST https://your-api-host/api/v1/upload/s3 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"filename": "report.pdf", "contentType": "application/pdf", "size": 102400}'
+```
+
+Response: `uploadUrl`, `publicUrl`, `fileKey`. Upload the file with `PUT` to `uploadUrl`, then create a source of type `FILE` with the `fileKey` in `initial_data`.
+
+## 5. Check source status
+
+```bash
+curl https://your-api-host/api/v1/sources/{sourceId} \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Status lifecycle: `CREATED` → `PENDING` → `PROCESSING` → `COMPLETED` or `FAILED`.
 
 ## Next steps
 
 <Columns cols="2">
   <Card title="Core Concepts" href="/concepts" icon="layers" horizontal="false">
-    Keep the mental model simple and easy to scan.
+    Spaces, collections, sources, artifacts.
   </Card>
 
   <Card title="Authentication" href="/authentication" icon="lock" horizontal="false">
-    Add your real auth flows and security notes.
+    Firebase JWT and API Keys.
+  </Card>
+
+  <Card title="API Reference" href="/api-reference" icon="code" horizontal="false">
+    Full endpoint specification.
   </Card>
 </Columns>
-

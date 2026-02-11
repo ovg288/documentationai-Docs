@@ -1,54 +1,79 @@
 ---
 title: Core Concepts
-description: The basic building blocks of this starter kit.
+description: Spaces, collections, sources, and artifacts in ctxfy-vault.
 ---
 
 ## Overview
 
-<Callout kind="alert">
-This page is an example. Replace every concept with the real terms your product uses.
-</Callout>
+ctxfy-vault organizes content in a hierarchical model: **Spaces** → **Collections** → **Sources** → **Artifacts**.
 
-## The building blocks
+## Spaces
 
-<Columns cols={2}>
-  <Card title="Pages" icon="file-text">
-    Every page is an `.mdx` file. Content lives in the repo and is safe to edit.
-  </Card>
-  <Card title="Navigation" icon="list">
-    Sidebar structure comes from `documentation.json`.
-  </Card>
-  <Card title="Components" icon="layout-grid">
-    Reusable blocks like Callouts, Steps, Tabs, and Cards keep pages consistent.
-  </Card>
-  <Card title="API Reference" icon="code">
-    If you use it, the API tab reads from `openapi.yaml`.
-  </Card>
-</Columns>
+A **space** is the top-level container. Each user owns spaces and can create, list, update, and delete them. All other resources (collections, sources, artifacts) belong to a space.
 
-## Navigation shape (sample)
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | /api/v1/spaces | Create space |
+| GET | /api/v1/spaces | List user's spaces |
+| GET | /api/v1/spaces/:spaceId | Get space |
+| PUT | /api/v1/spaces/:spaceId | Update space |
+| DELETE | /api/v1/spaces/:spaceId | Delete space |
 
-```json
-{
-  "tab": "Documentation",
-  "groups": [
-    {
-      "group": "Getting Started",
-      "pages": [
-        { "title": "Introduction", "path": "introduction" }
-      ]
-    }
-  ]
-}
-```
+## Collections
 
-## How to adapt this page
+**Collections** provide hierarchical organization inside a space. They form a tree via `parentId`. Use them to group sources (e.g. by project, topic, or folder).
 
-<Steps>
-  <Step title="Replace the terms" icon="edit">
-    Swap "Pages" and "Components" for your real domain language.
-  </Step>
-  <Step title="Add your concepts" icon="plus">
-    Create a section for the ideas your users must learn first.
-  </Step>
-</Steps>
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | /api/v1/spaces/:spaceId/collections | Create collection |
+| GET | /api/v1/spaces/:spaceId/collections | Get collection tree |
+
+## Sources
+
+A **source** is the main content unit. It has a `type`, processing `status`, and optional `collectionId`. Types:
+
+| Type | Description | `initial_data` |
+|------|-------------|----------------|
+| **URI** | Web URL | `url` or `uri` (required) |
+| **FILE** | File in S3 | `data` / fileKey (from S3 upload) |
+| **CONTENT** | Inline content | `data` |
+| **COMPOSITION** | Combined sources | `source_ids` (array) |
+
+### Source status
+
+`CREATED` → `PENDING` → `PROCESSING` → `COMPLETED` | `FAILED` | `CANCELED`
+
+### Source actions
+
+| Action | Path | Description |
+|--------|------|-------------|
+| Create | POST /spaces/:spaceId/sources | Create source |
+| Get | GET /sources/:sourceId | Get source |
+| Update | PATCH /sources/:sourceId | Patch metadata |
+| Delete | DELETE /sources/:sourceId | Soft delete |
+| Pin | PATCH /sources/:sourceId/toggle-pin | Toggle pin |
+| Restore | POST /sources/:sourceId/restore | Restore deleted |
+| Reprocess | POST /sources/:sourceId/reprocess | Re-run pipeline (COMPLETED/FAILED) |
+| Cancel | POST /sources/:sourceId/cancel | Cancel processing |
+| Refresh | POST /sources/:sourceId/refresh | Re-fetch (URI/FILE only) |
+
+## Artifacts
+
+**Artifacts** are extracted outputs from sources (e.g. context summaries, structured data). They have status: `CREATED`, `PENDING`, `PROCESSING`, `REVIEW`, `COMPLETED`, `FAILED`.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | /api/v1/spaces/:spaceId/artifacts | List artifacts |
+| PUT | /api/v1/source-artifact/:artifactId/process | Start processing |
+| PUT | /api/v1/source-artifact/:artifactId/promote | Promote to space (optional: title, description) |
+
+## S3 Upload
+
+For file-based sources, use the presigned upload flow:
+
+1. `POST /api/v1/upload/s3` with `filename`, `contentType`, `size`
+2. Receive `uploadUrl`, `publicUrl`, `fileKey`
+3. `PUT` file to `uploadUrl`
+4. Create source with type `FILE` and `fileKey` in `initial_data`
+
+Requires authentication (JWT or API key). Rate limits apply (Free: 10/min, Pro: 100/min).

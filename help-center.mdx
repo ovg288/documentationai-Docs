@@ -1,33 +1,27 @@
 ---
-title: Help Center (Sample)
+title: Help Center
+description: FAQs, guides, and support for ctxfy-vault API.
 ---
-
-<Callout kind="alert">
-This Help Center is sample content. Replace the cards and contact details with your real support paths.
-</Callout>
 
 <Columns cols={2}>
   <Card title="FAQs" icon="help-circle" href="/help-center/faq/getting-started" horizontal>
-    Starter answers you can rewrite.
+    Getting started and common questions.
   </Card>
-  <Card title="Troubleshooting" icon="alert-triangle" href="/help-center/troubleshooting/install-error" horizontal>
-    Common issues and fixes.
+  <Card title="Troubleshooting" icon="alert-triangle" href="/help-center/troubleshooting/auth-rate-limits" horizontal>
+    Authentication and rate limit issues.
   </Card>
-  <Card title="Guides" icon="book-open" href="/help-center/guides/setup-project" horizontal>
-    How-to guides for setup and onboarding.
+  <Card title="Guides" icon="book-open" href="/help-center/guides/first-request" horizontal>
+    Step-by-step integration guides.
   </Card>
   <Card title="Changelog" icon="clock" href="/changelog" horizontal>
-    Track updates after you go live.
+    API updates and release notes.
   </Card>
 </Columns>
 
-## Contact Support
+## Support
 
-<Columns cols={2}>
-  <Card title="Email Support" icon="mail" href="mailto:support@yourcompany.com">
-    Replace with your support email.
-  </Card>
-  <Card title="Community" icon="users" href="https://community.yourcompany.com" target="_blank">
-    Link to your community space.
-  </Card>
-</Columns>
+For technical issues, feature requests, or billing questions, use the support ticket endpoint:
+
+`POST /api/v1/support/tickets`
+
+Include `type`, `reply_address`, and `message` in the request body. Requires Firebase JWT authentication.

@@ -1,0 +1,39 @@
+---
+title: Your First API Request
+description: Send your first authenticated request to ctxfy-vault.
+---
+## Overview
+
+This guide walks you through sending a single authenticated request to the ctxfy-vault API.
+
+## Prerequisites
+
+- Base URL (e.g. `https://api.ctxfy.io`)
+- Firebase ID Token or User API Key
+
+## Step 1: Get a token
+
+**Option A — Firebase:** Sign in with Firebase Auth and get the ID token from your client SDK.
+
+**Option B — API Key:** Create a key with `POST /api/v1/api-keys` (using Firebase JWT), then use the returned `api_key` value.
+
+## Step 2: Call an endpoint
+
+Example — list your spaces:
+
+```bash
+curl https://your-api-host/api/v1/spaces \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+## Step 3: Interpret the response
+
+- **200** — Success; response body contains `data`.
+- **401** — Invalid or missing token. Check [Authentication](/authentication).
+- **429** — Rate limit exceeded. See [Troubleshooting](/help-center/troubleshooting/auth-rate-limits).
+
+## Next steps
+
+<Card title="Quickstart" href="/quickstart" icon="zap" horizontal="false">
+  Create a space, add a source, and upload a file.
+</Card>

@@ -1,0 +1,32 @@
+---
+title: Authentication and Rate Limits
+description: Troubleshooting 401 and 429 errors.
+---
+## 401 Unauthorized
+
+### Token expired
+
+Firebase ID tokens expire. Refresh the token or obtain a new one from your Firebase client. For API keys, ensure the key has not been revoked.
+
+### Missing or malformed header
+
+Use exactly: `Authorization: Bearer <token>` with a space before the token. Do not omit `Bearer` or use different header names.
+
+### Wrong token type
+
+Ensure you are using a valid Firebase ID token or a User API key. Other JWT formats are not accepted.
+
+## 429 Too Many Requests
+
+### Rate limit exceeded
+
+- **Free plan:** 10 requests/minute  
+- **Pro and above:** 100 requests/minute  
+
+Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`. On 429, the `Retry-After` header indicates when to retry.
+
+### Mitigation
+
+- Implement exponential backoff.
+- Batch requests where possible.
+- Consider upgrading the plan for higher limits.
