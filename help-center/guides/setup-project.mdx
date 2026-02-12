@@ -1,20 +1,43 @@
 ---
-title: Create Your First Doc Page
-description: A short guide to adding a new page to this starter kit.
+title: Setup project
+description: Prerequisites and project setup for integrating with the Ctxfy API.
 ---
+
 ## Overview
 
-Use this guide as a sample for your real setup instructions.
+Before calling the Ctxfy API, you need a **base URL** and an **API key**. This guide covers minimal project setup; for step-by-step requests see [Quickstart](/quickstart) and [First API Request](/help-center/guides/first-request).
 
-## Steps
+## Prerequisites
+
+- **Base URL** — Your API endpoint (e.g. `https://api.ctxfy.com` or your deployment).
+- **API key** — Create one in the Ctxfy dashboard or via `POST /api/v1/api-keys`. The raw key is shown only once; store it securely.
+
+## Optional: environment variables
+
+For local or script use, set:
+
+- `CTXFY_BASE_URL` — API base URL (e.g. `https://api.ctxfy.com`).
+- `CTXFY_API_KEY` — Your API key (Bearer token).
+
+Example `.env` (do not commit secrets):
+
+```
+CTXFY_BASE_URL=https://api.ctxfy.com
+CTXFY_API_KEY=your_api_key_here
+```
+
+## Next steps
 
 <Steps>
-  <Step title="Create a new file" icon="file-plus" title-type="p">
-    Add a page using + and start with a title and short description.
+  <Step title="Create a space" icon="layers" title-type="p">
+    Call <code>POST /api/v1/spaces</code> with name and optional description. See [Quickstart — Create a space](/quickstart#1-create-a-space).
   </Step>
-
-  <Step title="Write the first section" icon="edit" title-type="p">
-    Add a simple header and a few sentences users can scan quickly.
+  <Step title="Create a source" icon="file-text" title-type="p">
+    Add content via <code>POST /api/v1/spaces/:spaceId/sources</code> (type <code>CONTENT</code>, <code>URI</code>, or <code>FILE</code>). See [Quickstart — Create a source](/quickstart#3-create-a-source).
+  </Step>
+  <Step title="Check status and artifacts" icon="check-circle" title-type="p">
+    Use <code>GET /api/v1/sources/:sourceId</code> and <code>GET /api/v1/spaces/:spaceId/artifacts</code>. See [Concepts](/concepts).
   </Step>
 </Steps>
 
+For authentication details and rate limits, see [Authentication](/authentication).

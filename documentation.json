@@ -16,7 +16,8 @@
             "pages": [
               { "title": "Introduction", "path": "introduction", "icon": "home" },
               { "title": "Quickstart", "path": "quickstart", "icon": "zap" },
-              { "title": "Core Concepts", "path": "concepts", "icon": "layers" }
+              { "title": "Core Concepts", "path": "concepts", "icon": "layers" },
+              { "title": "Capabilities", "path": "capabilities", "icon": "package" }
             ]
           }
         ]
@@ -68,7 +69,8 @@
             "icon": "book-open",
             "expandable": false,
             "pages": [
-              { "title": "First API Request", "path": "help-center/guides/first-request" }
+              { "title": "First API Request", "path": "help-center/guides/first-request" },
+              { "title": "Setup project", "path": "help-center/guides/setup-project" }
             ]
           }
         ]

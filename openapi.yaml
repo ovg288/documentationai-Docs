@@ -7,6 +7,7 @@ info:
     Save conversation state as snapshots, extract structured context and artifacts.
     API access is available on Pro and Enterprise plans.
     All routes under `/api/v1` require authentication via `Authorization: Bearer <api_key>`.
+    Use a User API Key (create in the Ctxfy dashboard or via POST /api/v1/api-keys).
     Public endpoints: `/health`, `/metrics`.
 
     **Rate limiting:** Free plan — 10 req/min, Pro and above — 100 req/min.
@@ -48,7 +49,7 @@ paths:
     post:
       summary: Create space
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       requestBody:
         required: true
         content:
@@ -83,7 +84,7 @@ paths:
     get:
       summary: List spaces
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       responses:
         "200":
           description: List of spaces
@@ -107,7 +108,7 @@ paths:
     get:
       summary: Get space
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       responses:
@@ -138,7 +139,7 @@ paths:
     put:
       summary: Update space
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       requestBody:
@@ -181,7 +182,7 @@ paths:
     delete:
       summary: Delete space
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       responses:
@@ -209,7 +210,7 @@ paths:
     post:
       summary: Create collection
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       requestBody:
@@ -258,7 +259,7 @@ paths:
     get:
       summary: Get collection tree
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       responses:
@@ -290,7 +291,7 @@ paths:
     get:
       summary: List sources in a space
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       responses:
@@ -321,7 +322,7 @@ paths:
     post:
       summary: Create source
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       requestBody:
@@ -365,7 +366,7 @@ paths:
     get:
       summary: List sources in a collection
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/CollectionId"
       responses:
@@ -397,7 +398,7 @@ paths:
     get:
       summary: Get source
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       responses:
@@ -429,7 +430,7 @@ paths:
       summary: Patch source
       description: Partially updates source metadata.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       requestBody:
@@ -472,7 +473,7 @@ paths:
     delete:
       summary: Delete source
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       responses:
@@ -500,7 +501,7 @@ paths:
     patch:
       summary: Toggle pin
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       responses:
@@ -533,7 +534,7 @@ paths:
       summary: Restore source
       description: Restores a previously deleted (soft-deleted) source.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       responses:
@@ -566,7 +567,7 @@ paths:
       summary: Reprocess source
       description: Triggers reprocessing of a source. Source must be COMPLETED or FAILED with content available.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       requestBody:
@@ -604,7 +605,7 @@ paths:
       summary: Cancel source processing
       description: Cancels source processing.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       responses:
@@ -637,7 +638,7 @@ paths:
       summary: Refresh source
       description: Re-fetches source content. Only URL or FILE sources.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SourceId"
       requestBody:
@@ -680,7 +681,7 @@ paths:
     get:
       summary: List artifacts in a space
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/SpaceId"
       responses:
@@ -712,7 +713,7 @@ paths:
     put:
       summary: Process artifact
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/ArtifactId"
       responses:
@@ -745,7 +746,7 @@ paths:
       summary: Promote artifact
       description: "Promotes artifact to space. Optional body: title, description."
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/ArtifactId"
       requestBody:
@@ -783,7 +784,7 @@ paths:
       summary: Create API key for user
       description: Creates a new API key for the current user. The key gives access to all resources of the user. The raw key is returned only once in the response.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       requestBody:
         content:
           application/json:
@@ -817,7 +818,7 @@ paths:
     get:
       summary: List API keys for user
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       responses:
         "200":
           description: List of API keys (without secrets)
@@ -841,7 +842,7 @@ paths:
     delete:
       summary: Revoke API key
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       parameters:
         - $ref: "#/components/parameters/KeyId"
       responses:
@@ -875,7 +876,7 @@ paths:
         Email backend is chosen by SUPPORT_EMAIL_SENDER: "sendgrid" (default) or "google" (Gmail/Workspace SMTP).
         If no backend is configured, only DB persistence is performed.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       requestBody:
         required: true
         content:
@@ -912,7 +913,7 @@ paths:
       summary: Create S3 presigned upload
       description: Returns a presigned URL for uploading a file to S3. Requires API key authentication.
       security:
-        - FirebaseBearer: []
+        - ApiKeyBearer: []
       requestBody:
         required: true
         content:
@@ -946,11 +947,11 @@ paths:
                 $ref: "#/components/schemas/SimpleError"
 components:
   securitySchemes:
-    FirebaseBearer:
+    ApiKeyBearer:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-      description: User API key (Bearer token)
+      bearerFormat: "API Key"
+      description: User API Key. Create in the Ctxfy dashboard or via POST /api/v1/api-keys. Use Bearer <api_key> in Authorization header.
   parameters:
     SpaceId:
       name: spaceId

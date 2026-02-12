@@ -55,7 +55,7 @@ All requests to `/api/v1/*` (except `/health` and `/metrics`) require:
 Authorization: Bearer <api_key>
 ```
 
-Use a **User API Key** for authentication. See [Authentication](/authentication) for details.
+Use a **User API Key**. See [Authentication](/authentication) for details.
 
 ## Rate limiting
 
@@ -64,6 +64,10 @@ Use a **User API Key** for authentication. See [Authentication](/authentication)
 
 Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`.  
 On exceed: `429 Too Many Requests` with `Retry-After` header.
+
+## Capabilities by theme
+
+Ctxfy delivers **compression**, **source pipeline** (ingest → context formation → merge), **context and artifacts** (state, extraction, assembly), **quality and governance**, **integration and delivery**, **cost and observability**, and **ideation and automation**. See [Capabilities](/capabilities) for one-line descriptions and how they map to the API.
 
 ## Next steps
 
@@ -74,6 +78,10 @@ On exceed: `429 Too Many Requests` with `Retry-After` header.
 
   <Card title="Core Concepts" href="/concepts" icon="layers" horizontal="false">
     Spaces, collections, sources, artifacts.
+  </Card>
+
+  <Card title="Capabilities" href="/capabilities" icon="package" horizontal="false">
+    Product themes and one-line messaging.
   </Card>
 
   <Card title="Authentication" href="/authentication" icon="lock" horizontal="false">

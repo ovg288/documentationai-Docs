@@ -36,7 +36,7 @@ When writing or updating content in the `docs/documentation-site` directory:
 
 - **Language:** Docs must be written in English.
 - **Service name:** Use **Ctxfy** (Contextify) as the service name. Do not use internal project names (e.g. ctxfy-vault) in user-facing content.
-- **Authentication:** Do not describe JWT auth type. API auth for users is implemented using API keys only.
+- **Authentication (constraint):** For external use, only **API Key** is documented and advertised. Token-based authentication (e.g. Firebase ID Token / JWT) is for internal interaction only and must not be described, advertised, or recommended to users or integrators. All public docs must state that API access is via API Key only.
 - **No internals:** Do not expose internal implementation details or inter-service interactions (e.g. RabbitMQ, Firebase, outbox, workflow pipelines). Document only the external API contract and integration flow.
 
 ## Structure
@@ -44,10 +44,11 @@ When writing or updating content in the `docs/documentation-site` directory:
 ```
 ./
 ├── documentation.json   # Site config, navigation, branding
-├── openapi.yaml        # API spec → API Reference tab
-├── introduction.mdx    # Landing page
+├── openapi.yaml        # API spec → API Reference tab (source: ../api-documentation.yaml)
+├── introduction.mdx   # Landing page
 ├── quickstart.mdx
 ├── concepts.mdx
+├── capabilities.mdx    # Product themes from marketing-hub features-clusters (one-line per cluster)
 ├── authentication.mdx
 ├── changelog.mdx
 ├── help-center.mdx
@@ -81,10 +82,24 @@ Update `documentation.json` — add/remove pages, groups, or tabs.
 ### API Reference
 Regenerate from the source of truth:
 1. Copy `../api-documentation.yaml` → `openapi.yaml`
-2. Apply Public Doc rules: Ctxfy title, API keys only; remove internal references (RMQ, workflows, system services)
+2. Apply Public Doc rules: Ctxfy title, **API Key only** in auth (security scheme and description; do not document JWT/Firebase tokens); remove internal references (RMQ, workflows, system services)
 3. Fix `CollectionTreeResponse` circular ref if present
 
 See `notice.mdx` for sync notes.
+
+## Alignment: Public Documentation sources
+
+Public Documentation = **information for developers** + **marketing and promotion**. Align content from two sources into this site:
+
+| Source | Role | Key content |
+|--------|------|-------------|
+| **docs/** (host project root) | Technical and business source of truth | `service.md`, `business-process-documentation.md`, `api-documentation.yaml` — API contract, endpoints, flows. Use for API Reference, Concepts, Quickstart, authentication. |
+| **docs/marketing-hub/** | Marketing, features, promotion | `features/` (feature JSONs, `features-clusters.md`, `features-index.json`), messaging, campaigns, brand. Use for value props, taglines, FAQs, **Capabilities** page, one-line messaging per cluster. |
+| **docs/documentation-site/** | Target of alignment | Rendered public site. Combine technical accuracy (from docs/) with marketing messaging (from marketing-hub). Do not duplicate; reference or copy from sources. |
+
+- **API Reference:** Source is `../api-documentation.yaml`. Copy to `openapi.yaml` and apply Public Doc rules (Ctxfy title, API keys only; no internals).
+- **Concepts, Quickstart, Authentication:** Align with `../service.md` and business process; keep narrative in English, Ctxfy naming.
+- **Value props, Why Ctxfy?, Use cases, Capabilities:** Use messaging and one-line cluster copy from `../marketing-hub/` (e.g. `features/features-clusters.md`). Do not invent marketing copy; reference the hub.
 
 ## Relation to Host Project (ctxfy-vault)
 
@@ -94,4 +109,4 @@ See `notice.mdx` for sync notes.
 
 ## Relation to Marketing Hub (../marketing-hub)
 
-Use messaging and terminology from `../marketing-hub/` for user-facing copy (value props, taglines, FAQs). Do not duplicate; reference or copy from the hub.
+Use messaging and terminology from `../marketing-hub/` for user-facing copy (value props, taglines, FAQs, Capabilities). Do not duplicate; reference or copy from the hub.

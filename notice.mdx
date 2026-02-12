@@ -5,10 +5,13 @@ description: About this documentation.
 
 ## Ctxfy API documentation
 
-This documentation describes the Ctxfy HTTP API for AI context management. Content is kept in sync with the service specification (`.cerses/service.md` and `.cerses/api-documentation.yaml` in the main repository).
+This documentation describes the Ctxfy HTTP API for AI context management. Content is aligned with:
+
+- **Technical and business source:** `docs/service.md`, `docs/business-process-documentation.md`, `docs/api-documentation.yaml` in the host repository (ctxfy-vault). Use for API contract, concepts, quickstart.
+- **Marketing and features source:** `docs/marketing-hub/` (features, clusters, messaging). Use for value propositions, Capabilities page, and FAQs.
 
 ## Content you can edit
 
 - Page content: edit `.mdx` files in this repo.
 - Navigation: update `documentation.json`.
-- API reference: the API Reference tab is generated from `openapi.yaml`. Copy from `.cerses/api-documentation.yaml`, then apply Public Doc rules (Ctxfy title, API keys only), remove internal references (RMQ, workflows, rmq.md, system services), and fix `CollectionTreeResponse` circular ref.
+- API reference: the API Reference tab is generated from `openapi.yaml`. Copy from `docs/api-documentation.yaml`, then apply Public Doc rules (Ctxfy title, API keys only), remove internal references (RMQ, workflows, rmq.md, system services), and fix `CollectionTreeResponse` circular ref if present.
