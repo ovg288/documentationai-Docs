@@ -17,7 +17,7 @@ This guide walks you through creating a space, uploading a source (e.g. AI conve
 ## 1. Create a space
 
 ```bash
-curl -X POST https://api.ctxfy.com/api/v1/spaces \
+curl -X POST https://api.ctxfy.com/v1/spaces \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"name": "My Project", "description": "AI context for my project"}'
@@ -30,7 +30,7 @@ Response includes `data.id` — the `spaceId` for subsequent calls.
 Organize sources in a collection:
 
 ```bash
-curl -X POST https://api.ctxfy.com/api/v1/spaces/{spaceId}/collections \
+curl -X POST https://api.ctxfy.com/v1/spaces/{spaceId}/collections \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"name": "Documents", "parentId": null}'
@@ -43,7 +43,7 @@ Use `parentId` to create nested collections.
 Create a source by type. For pasted content (e.g. AI conversation), use `CONTENT`:
 
 ```bash
-curl -X POST https://api.ctxfy.com/api/v1/spaces/{spaceId}/sources \
+curl -X POST https://api.ctxfy.com/v1/spaces/{spaceId}/sources \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -61,7 +61,7 @@ For URLs use `URI`, for uploaded files use `FILE`. See [Concepts](/concepts#sour
 For file-based sources, get a presigned URL first:
 
 ```bash
-curl -X POST https://api.ctxfy.com/api/v1/upload/s3 \
+curl -X POST https://api.ctxfy.com/v1/upload/s3 \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"filename": "report.pdf", "contentType": "application/pdf", "size": 102400}'
@@ -72,7 +72,7 @@ Response: `uploadUrl`, `publicUrl`, `fileKey`. Upload the file with `PUT` to `up
 ## 5. Check source status
 
 ```bash
-curl https://api.ctxfy.com/api/v1/sources/{sourceId} \
+curl https://api.ctxfy.com/v1/sources/{sourceId} \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
