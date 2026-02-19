@@ -1283,6 +1283,8 @@ components:
         instructions:
           type: object
           additionalProperties: true
+          description: |
+            Processing options. Optional `postback_url` (HTTPS) — Ctxfy sends an HTTP POST when the source reaches COMPLETED, FAILED, or CANCELED.
         description:
           type: string
           nullable: true

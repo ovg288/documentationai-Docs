@@ -1,8 +1,12 @@
 {
   "name": "Ctxfy Documentation Center",
   "colors": {
-    "light": { "brand": "#F97316" },
-    "dark": { "brand": "#FDBA74" }
+    "light": {
+      "brand": "#F97316"
+    },
+    "dark": {
+      "brand": "#FDBA74"
+    }
   },
   "navigation": {
     "tabs": [
@@ -14,10 +18,26 @@
             "group": "Start Here",
             "icon": "rocket",
             "pages": [
-              { "title": "Introduction", "path": "introduction", "icon": "home" },
-              { "title": "Quickstart", "path": "quickstart", "icon": "zap" },
-              { "title": "Core Concepts", "path": "concepts", "icon": "layers" },
-              { "title": "Capabilities", "path": "capabilities", "icon": "package" }
+              {
+                "title": "Introduction",
+                "path": "introduction",
+                "icon": "home"
+              },
+              {
+                "title": "Quickstart",
+                "path": "quickstart",
+                "icon": "zap"
+              },
+              {
+                "title": "Core Concepts",
+                "path": "concepts",
+                "icon": "layers"
+              },
+              {
+                "title": "Capabilities",
+                "path": "capabilities",
+                "icon": "package"
+              }
             ]
           }
         ]
@@ -30,7 +50,11 @@
             "group": "Overview",
             "icon": "file-text",
             "pages": [
-              { "title": "Authentication", "path": "authentication", "icon": "lock" }
+              {
+                "title": "Authentication",
+                "path": "authentication",
+                "icon": "lock"
+              }
             ]
           },
           {
@@ -43,17 +67,36 @@
         "tab": "Help Center",
         "icon": "help-circle",
         "pages": [
-          { "title": "Help Center", "path": "help-center", "icon": "home" },
+          {
+            "title": "Help Center",
+            "path": "help-center",
+            "icon": "home"
+          },
           {
             "group": "FAQs",
             "icon": "help-circle",
             "expandable": false,
             "pages": [
-              { "title": "Why Ctxfy?", "path": "help-center/faq/why-ctxfy" },
-              { "title": "Getting Started", "path": "help-center/faq/getting-started" },
-              { "title": "Use Cases", "path": "help-center/faq/use-cases" },
-              { "title": "Pricing & Tokens", "path": "help-center/faq/pricing-tokens" },
-              { "title": "Security & Privacy", "path": "help-center/faq/security-privacy" }
+              {
+                "title": "Why Ctxfy?",
+                "path": "help-center/faq/why-ctxfy"
+              },
+              {
+                "title": "Getting Started",
+                "path": "help-center/faq/getting-started"
+              },
+              {
+                "title": "Use Cases",
+                "path": "help-center/faq/use-cases"
+              },
+              {
+                "title": "Pricing & Tokens",
+                "path": "help-center/faq/pricing-tokens"
+              },
+              {
+                "title": "Security & Privacy",
+                "path": "help-center/faq/security-privacy"
+              }
             ]
           },
           {
@@ -61,7 +104,10 @@
             "icon": "alert-triangle",
             "expandable": false,
             "pages": [
-              { "title": "Authentication & Rate Limits", "path": "help-center/troubleshooting/auth-rate-limits" }
+              {
+                "title": "Authentication & Rate Limits",
+                "path": "help-center/troubleshooting/auth-rate-limits"
+              }
             ]
           },
           {
@@ -69,8 +115,18 @@
             "icon": "book-open",
             "expandable": false,
             "pages": [
-              { "title": "First API Request", "path": "help-center/guides/first-request" },
-              { "title": "Setup project", "path": "help-center/guides/setup-project" }
+              {
+                "title": "First API Request",
+                "path": "help-center/guides/first-request"
+              },
+              {
+                "title": "Setup project",
+                "path": "help-center/guides/setup-project"
+              },
+              {
+                "title": "Postbacks",
+                "path": "help-center/guides/postbacks"
+              }
             ]
           }
         ]
@@ -79,7 +135,11 @@
         "tab": "Changelog",
         "icon": "clock",
         "pages": [
-          { "title": "Changelog", "path": "changelog", "icon": "history" }
+          {
+            "title": "Changelog",
+            "path": "changelog",
+            "icon": "history"
+          }
         ]
       }
     ]

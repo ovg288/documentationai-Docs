@@ -58,6 +58,10 @@ A **source** is raw input you upload for processing—AI conversations, document
 | Refresh | POST /v1/sources/:sourceId/refresh | Re-fetch (URI/FILE only) |
 | Fast-forward | POST /v1/sources/:sourceId/fast-forward | Update with new data (URI/FILE/CONTENT) |
 
+### Postbacks
+
+When creating a source, you can pass `postback_url` inside `instructions` to receive an HTTP POST when processing completes. See [Postbacks](/help-center/guides/postbacks) for details.
+
 ## Artifacts
 
 **Artifacts** are extracted outputs from sources—code, schemas, diagrams, and structured context. They have status: `CREATED`, `PENDING`, `PROCESSING`, `REVIEW`, `COMPLETED`, `FAILED`.

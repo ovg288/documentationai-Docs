@@ -3,6 +3,11 @@ title: Changelog
 description: API updates and release notes for Ctxfy.
 ---
 
+<Update label="2026-02-20" description="Postbacks" tags={["api", "feature"]}>
+## What changed
+- **Postbacks** — Optional `postback_url` in `instructions` when creating a source. Ctxfy sends an HTTP POST to your URL when the source reaches COMPLETED, FAILED, or CANCELED. See [Postbacks guide](/help-center/guides/postbacks).
+</Update>
+
 <Update label="2026-01-28" description="Support tickets" tags={["api", "feature"]}>
 ## What changed
 - **Support tickets** — `POST /api/v1/support/tickets` for technical and billing support requests.

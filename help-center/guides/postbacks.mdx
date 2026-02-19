@@ -1,0 +1,93 @@
+---
+title: Postbacks
+description: Receive HTTP callbacks when source processing completes.
+---
+
+## Overview
+
+**Postbacks** let you receive an HTTP POST to a URL of your choice when a source reaches a final processing status. Use postbacks to avoid polling—your integration is notified as soon as processing finishes.
+
+## When postbacks are sent
+
+A postback is sent when the source transitions to one of:
+
+| Status | Meaning |
+|--------|---------|
+| `COMPLETED` | Processing finished successfully |
+| `FAILED` | Processing failed (see `message` for details) |
+| `CANCELED` | User or system canceled processing |
+
+## Configuration
+
+Add `postback_url` to the `instructions` object when creating a source:
+
+```bash
+curl -X POST https://api.ctxfy.com/v1/spaces/{spaceId}/sources \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "CONTENT",
+    "initial_data": {"data": "Your content here..."},
+    "instructions": {
+      "postback_url": "https://your-server.com/webhooks/ctxfy"
+    },
+    "name": "My Source"
+  }'
+```
+
+The URL must be **HTTPS** and publicly reachable. Ctxfy sends a POST request to your endpoint when the source reaches a final status.
+
+## Postback payload
+
+Your endpoint receives a JSON body:
+
+```json
+{
+  "event": "SourceStatusNotification",
+  "sourceId": "uuid-of-the-source",
+  "userId": "user-id",
+  "spaceId": "space-id",
+  "status": "COMPLETED",
+  "message": "Optional error message for FAILED"
+}
+```
+
+| Field | Type | Description |
+|-------|------|--------------|
+| `event` | string | Always `"SourceStatusNotification"` |
+| `sourceId` | string | ID of the source |
+| `userId` | string | User ID |
+| `spaceId` | string | Space ID |
+| `status` | string | `COMPLETED`, `FAILED`, or `CANCELED` |
+| `message` | string | Present for `FAILED`; error details |
+
+## Best practices
+
+1. **Respond with 2xx** — Your endpoint should return `200` (or any 2xx) quickly. Ctxfy may retry on non-2xx or timeout.
+
+2. **Implement idempotency** — You may receive the same postback more than once (e.g. retries). Use `sourceId` + `status` to deduplicate and process each notification once.
+
+3. **Validate the request** — Verify the request originates from Ctxfy (e.g. via signature header if supported; check docs for the latest options).
+
+4. **Handle asynchronously** — Acknowledge the POST promptly and process the payload in a background job to avoid timeouts.
+
+## Alternative: polling
+
+If postbacks are not suitable (e.g. behind a firewall), poll for status:
+
+```bash
+curl https://api.ctxfy.com/v1/sources/{sourceId} \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Check `data.status` for `COMPLETED`, `FAILED`, or `CANCELED`. See [Quickstart](/quickstart#5-check-source-status) for the status lifecycle.
+
+## Next steps
+
+<Card title="Core Concepts" href="/concepts" icon="layers" horizontal="false">
+  Sources, artifacts, and status lifecycle.
+</Card>
+
+<Card title="Quickstart" href="/quickstart" icon="zap" horizontal="false">
+  Create a space and source step by step.
+</Card>
