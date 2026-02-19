@@ -10,7 +10,7 @@ Before calling the Ctxfy API, you need a **base URL** and an **API key**. This g
 ## Prerequisites
 
 - **Base URL** — Your API endpoint (e.g. `https://api.ctxfy.com` or your deployment).
-- **API key** — Create one in the Ctxfy dashboard or via `POST /api/v1/api-keys`. The raw key is shown only once; store it securely.
+- **API key** — Create one in the Ctxfy dashboard or via `POST /v1/api-keys`. The raw key is shown only once; store it securely.
 
 ## Optional: environment variables
 
@@ -30,13 +30,13 @@ CTXFY_API_KEY=your_api_key_here
 
 <Steps>
   <Step title="Create a space" icon="layers" title-type="p">
-    Call <code>POST /api/v1/spaces</code> with name and optional description. See [Quickstart — Create a space](/quickstart#1-create-a-space).
+    Call <code>POST /v1/spaces</code> with name and optional description. See [Quickstart — Create a space](/quickstart#1-create-a-space).
   </Step>
   <Step title="Create a source" icon="file-text" title-type="p">
-    Add content via <code>POST /api/v1/spaces/:spaceId/sources</code> (type <code>CONTENT</code>, <code>URI</code>, or <code>FILE</code>). See [Quickstart — Create a source](/quickstart#3-create-a-source).
+    Add content via <code>POST /v1/spaces/:spaceId/sources</code> (type <code>CONTENT</code>, <code>URI</code>, or <code>FILE</code>). See [Quickstart — Create a source](/quickstart#3-create-a-source).
   </Step>
   <Step title="Check status and artifacts" icon="check-circle" title-type="p">
-    Use <code>GET /api/v1/sources/:sourceId</code> and <code>GET /api/v1/spaces/:spaceId/artifacts</code>. See [Concepts](/concepts).
+    Use <code>GET /v1/sources/:sourceId</code> and <code>GET /v1/spaces/:spaceId/artifacts</code>. See [Concepts](/concepts).
   </Step>
 </Steps>
 

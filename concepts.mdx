@@ -13,11 +13,11 @@ A **space** is a project container. Use spaces to organize snapshots and keep co
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | /api/v1/spaces | Create space |
-| GET | /api/v1/spaces | List user's spaces |
-| GET | /api/v1/spaces/:spaceId | Get space |
-| PUT | /api/v1/spaces/:spaceId | Update space |
-| DELETE | /api/v1/spaces/:spaceId | Delete space |
+| POST | /v1/spaces | Create space |
+| GET | /v1/spaces | List user's spaces |
+| GET | /v1/spaces/:spaceId | Get space |
+| PUT | /v1/spaces/:spaceId | Update space |
+| DELETE | /v1/spaces/:spaceId | Delete space |
 
 ## Collections
 
@@ -25,8 +25,8 @@ A **space** is a project container. Use spaces to organize snapshots and keep co
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | /api/v1/spaces/:spaceId/collections | Create collection |
-| GET | /api/v1/spaces/:spaceId/collections | Get collection tree |
+| POST | /v1/spaces/:spaceId/collections | Create collection |
+| GET | /v1/spaces/:spaceId/collections | Get collection tree |
 
 ## Sources
 
@@ -35,7 +35,7 @@ A **source** is raw input you upload for processing—AI conversations, document
 | Type | Description | `initial_data` |
 |------|-------------|----------------|
 | **URI** | Web URL | `url` or `uri` (required) |
-| **FILE** | Uploaded file | `data` — fileKey from POST /upload/s3 response |
+| **FILE** | Uploaded file | `data` — fileKey from POST /v1/upload/s3 response |
 | **CONTENT** | Pasted content (e.g. AI conversation) | `data` |
 | **COMPOSITION** | Combined sources | `source_ids` (array) |
 
@@ -47,15 +47,16 @@ A **source** is raw input you upload for processing—AI conversations, document
 
 | Action | Path | Description |
 |--------|------|-------------|
-| Create | POST /spaces/:spaceId/sources | Create source |
-| Get | GET /sources/:sourceId | Get source |
-| Update | PATCH /sources/:sourceId | Patch metadata |
-| Delete | DELETE /sources/:sourceId | Soft delete |
-| Pin | PATCH /sources/:sourceId/toggle-pin | Toggle pin |
-| Restore | POST /sources/:sourceId/restore | Restore deleted |
-| Reprocess | POST /sources/:sourceId/reprocess | Re-run pipeline (COMPLETED/FAILED) |
-| Cancel | POST /sources/:sourceId/cancel | Cancel processing |
-| Refresh | POST /sources/:sourceId/refresh | Re-fetch (URI/FILE only) |
+| Create | POST /v1/spaces/:spaceId/sources | Create source |
+| Get | GET /v1/sources/:sourceId | Get source |
+| Update | PATCH /v1/sources/:sourceId | Patch metadata |
+| Delete | DELETE /v1/sources/:sourceId | Soft delete |
+| Pin | PATCH /v1/sources/:sourceId/toggle-pin | Toggle pin |
+| Restore | POST /v1/sources/:sourceId/restore | Restore deleted |
+| Reprocess | POST /v1/sources/:sourceId/reprocess | Re-run pipeline (COMPLETED/FAILED) |
+| Cancel | POST /v1/sources/:sourceId/cancel | Cancel processing |
+| Refresh | POST /v1/sources/:sourceId/refresh | Re-fetch (URI/FILE only) |
+| Fast-forward | POST /v1/sources/:sourceId/fast-forward | Update with new data (URI/FILE/CONTENT) |
 
 ## Artifacts
 
@@ -63,15 +64,16 @@ A **source** is raw input you upload for processing—AI conversations, document
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | /api/v1/spaces/:spaceId/artifacts | List artifacts |
-| PUT | /api/v1/source-artifact/:artifactId/process | Start processing |
-| PUT | /api/v1/source-artifact/:artifactId/promote | Promote to space (optional: title, description) |
+| GET | /v1/spaces/:spaceId/artifacts | List artifacts |
+| PUT | /v1/source-artifact/:artifactId/process | Start processing |
+| PUT | /v1/source-artifact/:artifactId/promote | Promote to space (optional: title, description) |
+| DELETE | /v1/source-artifact/:artifactId | Soft-delete source artifact |
 
 ## S3 Upload
 
 For file-based sources, use the presigned upload flow:
 
-1. `POST /api/v1/upload/s3` with `filename`, `contentType`, `size`
+1. `POST /v1/upload/s3` with `filename`, `contentType`, `size`
 2. Receive `uploadUrl`, `publicUrl`, `fileKey`
 3. `PUT` file to `uploadUrl`
 4. Create source with type `FILE` and `initial_data: { "data": "<fileKey>" }`

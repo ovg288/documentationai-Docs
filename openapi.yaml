@@ -6,8 +6,8 @@ info:
     Ctxfy API for AI context management: spaces, sources, artifacts, and file uploads.
     Save conversation state as snapshots, extract structured context and artifacts.
     API access is available on Pro and Enterprise plans.
-    All routes under `/api/v1` require authentication via `Authorization: Bearer <api_key>`.
-    Use a User API Key (create in the Ctxfy dashboard or via POST /api/v1/api-keys).
+    All routes under `/v1` require authentication via `Authorization: Bearer <api_key>`.
+    Use a User API Key (create in the Ctxfy dashboard or via POST /v1/api-keys).
     Public endpoints: `/health`, `/metrics`.
 
     **Rate limiting:** Free plan — 10 req/min, Pro and above — 100 req/min.
@@ -45,7 +45,7 @@ paths:
             text/plain:
               schema:
                 type: string
-  /api/v1/spaces:
+  /v1/spaces:
     post:
       summary: Create space
       security:
@@ -104,7 +104,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/spaces/{spaceId}:
+  /v1/spaces/{spaceId}:
     get:
       summary: Get space
       security:
@@ -206,7 +206,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/spaces/{spaceId}/collections:
+  /v1/spaces/{spaceId}/collections:
     post:
       summary: Create collection
       security:
@@ -287,7 +287,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/spaces/{spaceId}/sources:
+  /v1/spaces/{spaceId}/sources:
     get:
       summary: List sources in a space
       security:
@@ -362,7 +362,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/collections/{collectionId}/sources:
+  /v1/collections/{collectionId}/sources:
     get:
       summary: List sources in a collection
       security:
@@ -394,7 +394,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/sources/{sourceId}:
+  /v1/sources/{sourceId}:
     get:
       summary: Get source
       security:
@@ -497,7 +497,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/sources/{sourceId}/toggle-pin:
+  /v1/sources/{sourceId}/toggle-pin:
     patch:
       summary: Toggle pin
       security:
@@ -529,7 +529,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/sources/{sourceId}/restore:
+  /v1/sources/{sourceId}/restore:
     post:
       summary: Restore source
       description: Restores a previously deleted (soft-deleted) source.
@@ -562,7 +562,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/sources/{sourceId}/reprocess:
+  /v1/sources/{sourceId}/reprocess:
     post:
       summary: Reprocess source
       description: Triggers reprocessing of a source. Source must be COMPLETED or FAILED with content available.
@@ -600,7 +600,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/sources/{sourceId}/cancel:
+  /v1/sources/{sourceId}/cancel:
     post:
       summary: Cancel source processing
       description: Cancels source processing.
@@ -633,7 +633,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/sources/{sourceId}/refresh:
+  /v1/sources/{sourceId}/refresh:
     post:
       summary: Refresh source
       description: Re-fetches source content. Only URL or FILE sources.
@@ -677,7 +677,55 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/spaces/{spaceId}/artifacts:
+  /v1/sources/{sourceId}/fast-forward:
+    post:
+      summary: Fast-forward source
+      description: |
+        Updates target source with new data from a temporary source (URL, CONTENT, or FILE).
+        Target source must exist and be in final status (COMPLETED or FAILED).
+        Creates temp source, uploads initial_data, and triggers fast-forward workflow.
+      security:
+        - ApiKeyBearer: []
+      parameters:
+        - $ref: "#/components/parameters/SourceId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FastForwardSourceRequest"
+      responses:
+        "200":
+          description: Fast-forward initiated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageEnvelope"
+        "400":
+          description: Invalid request (e.g. source not COMPLETED/FAILED)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthError"
+        "404":
+          description: Source not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /v1/spaces/{spaceId}/artifacts:
     get:
       summary: List artifacts in a space
       security:
@@ -709,7 +757,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/source-artifact/{artifactId}/process:
+  /v1/source-artifact/{artifactId}/process:
     put:
       summary: Process artifact
       security:
@@ -741,7 +789,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/source-artifact/{artifactId}/promote:
+  /v1/source-artifact/{artifactId}/promote:
     put:
       summary: Promote artifact
       description: "Promotes artifact to space. Optional body: title, description."
@@ -779,7 +827,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/api-keys:
+  /v1/api-keys:
     post:
       summary: Create API key for user
       description: Creates a new API key for the current user. The key gives access to all resources of the user. The raw key is returned only once in the response.
@@ -838,7 +886,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/api-keys/{keyId}:
+  /v1/api-keys/{keyId}:
     delete:
       summary: Revoke API key
       security:
@@ -866,7 +914,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/support/tickets:
+  /v1/support/tickets:
     post:
       summary: Create support ticket
       description: |
@@ -908,7 +956,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/upload/s3:
+  /v1/upload/s3:
     post:
       summary: Create S3 presigned upload
       description: Returns a presigned URL for uploading a file to S3. Requires API key authentication.
@@ -951,7 +999,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: "API Key"
-      description: User API Key. Create in the Ctxfy dashboard or via POST /api/v1/api-keys. Use Bearer <api_key> in Authorization header.
+      description: User API Key. Create in the Ctxfy dashboard or via POST /v1/api-keys. Use Bearer <api_key> in Authorization header.
   parameters:
     SpaceId:
       name: spaceId
@@ -1287,6 +1335,23 @@ components:
         run_artifact_extraction:
           type: boolean
           description: Default true
+    FastForwardSourceRequest:
+      type: object
+      additionalProperties: false
+      description: New data for fast-forward. Types URI, FILE, or CONTENT. Same initial_data structure as CreateSourceRequest.
+      required: [type, initial_data]
+      properties:
+        type:
+          type: string
+          enum: [URI, FILE, CONTENT]
+          description: Type of new source data
+        initial_data:
+          $ref: "#/components/schemas/CreateSourceRequestInitialData"
+          description: URI url/uri; FILE data (fileKey from S3); CONTENT data (inline)
+        instructions:
+          type: object
+          additionalProperties: true
+          description: Optional processing instructions
     PromoteArtifactRequest:
       type: object
       additionalProperties: false
